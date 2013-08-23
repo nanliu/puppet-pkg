@@ -15,7 +15,7 @@ Puppet::Type.newtype(:pkg) do
     desc "The package name."
   end
 
-  newparam(:version) do
+  newproperty(:version) do
   end
 
   newparam(:install_options) do
