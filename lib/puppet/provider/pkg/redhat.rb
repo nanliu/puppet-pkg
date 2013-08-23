@@ -2,10 +2,13 @@ Puppet::Type.type(:pkg).provide(:yum) do
   commands :rpm => 'rpm',
            :yum => 'yum'
 
+  confine    :osfamily=>'redhat'
+  defaultfor :osfamily=>'redhat'
+
   mk_resource_methods
 
   def self.instances
-    packages = rpm('-qa','--qf','%{NAME} %{VERSION}-%{RELEASE}\n') 
+    packages = rpm('-qa','--qf','%{NAME} %{VERSION}-%{RELEASE}\n')
     packages.split("\n").collect do |line|
       name, version = line.split(' ', 2)
       new(
