@@ -2,6 +2,18 @@ Puppet::Type.type(:pkg).provide(:yum) do
   commands :rpm => 'rpm',
            :yum => 'yum'
 
+  def self.instances
+    packages = rpm('-qa','--qf','%{NAME} %{VERSION}-%{RELEASE}\n') 
+    packages.split("\n").collect do |line|
+      name, version = line.split(' ', 2)
+      new(
+        :name =>name,
+        :ensure => :present,
+        :version => version
+      )
+    end
+  end
+
   def exists?
     rpm('-q', resource[:name])
   rescue Puppet::ExecutionFailure => e
