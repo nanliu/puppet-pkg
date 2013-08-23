@@ -9,7 +9,8 @@ Puppet::Type.type(:pkg).provide(:yum) do
   end
 
   def install
-    yum('install', resource[:install_options], resource[:name])
+    package = resource[:version] ? "#{resource[:name]}-#{resource[:version]}" : resource[:name]
+    yum('install', resource[:install_options], package)
   end
 
   def remove

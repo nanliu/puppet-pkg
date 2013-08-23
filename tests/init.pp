@@ -1,4 +1,4 @@
 pkg { 'ack':
-  ensure => present,
-  install_options => '--demo',
+  ensure  => present,
+  version => "1.96-1.el6",
 }

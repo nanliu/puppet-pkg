@@ -15,6 +15,9 @@ Puppet::Type.newtype(:pkg) do
     desc "The package name."
   end
 
+  newparam(:version) do
+  end
+
   newparam(:install_options) do
     defaultto('-y')
   end
