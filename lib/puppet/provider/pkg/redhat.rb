@@ -9,10 +9,10 @@ Puppet::Type.type(:pkg).provide(:yum) do
   end
 
   def install
-    yum('install', '-y', resource[:name])
+    yum('install', resource[:install_options], resource[:name])
   end
 
   def remove
-    yum('remove', '-y',  resource[:name])
+    yum('remove', resource[:remove_options],  resource[:name])
   end
 end

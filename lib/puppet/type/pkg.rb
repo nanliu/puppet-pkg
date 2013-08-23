@@ -11,9 +11,15 @@ Puppet::Type.newtype(:pkg) do
     end
   end
 
-
   newparam(:name, :namevar=>true) do
     desc "The package name."
   end
 
+  newparam(:install_options) do
+    defaultto('-y')
+  end
+
+  newparam(:remove_options) do
+    defaultto('-y')
+  end
 end
