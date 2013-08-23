@@ -1,3 +1,3 @@
-pkg { 'hello':
+pkg { 'ack':
   ensure => present,
 }

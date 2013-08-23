@@ -8,4 +8,11 @@ Puppet::Type.type(:pkg).provide(:yum) do
     false
   end
 
+  def create
+    yum('install', resource[:name])
+  end
+
+  def destroy
+    yum('remove', resource[:name])
+  end
 end
