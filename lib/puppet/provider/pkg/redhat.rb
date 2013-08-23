@@ -16,4 +16,15 @@ Puppet::Type.type(:pkg).provide(:yum) do
   def remove
     yum('remove', resource[:remove_options],  resource[:name])
   end
+
+  def version
+    version = rpm('-q', resource[:name])
+    if version =~ /^#{Regexp.escape(resource[:name])}-(.*)/
+      $1
+    end
+  end
+
+  def version=(value)
+    yum('install', "#{resource[:name]}-#{resource[:version]}")
+  end
 end
