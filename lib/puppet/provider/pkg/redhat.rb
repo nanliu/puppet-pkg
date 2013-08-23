@@ -2,6 +2,8 @@ Puppet::Type.type(:pkg).provide(:yum) do
   commands :rpm => 'rpm',
            :yum => 'yum'
 
+  mk_resource_methods
+
   def self.instances
     packages = rpm('-qa','--qf','%{NAME} %{VERSION}-%{RELEASE}\n') 
     packages.split("\n").collect do |line|
@@ -11,6 +13,15 @@ Puppet::Type.type(:pkg).provide(:yum) do
         :ensure => :present,
         :version => version
       )
+    end
+  end
+
+  def self.prefetch(resources)
+    packages = instances
+    resources.keys.each do |name|
+      if provider = packages.find{ |pkg| pkg.name == name }
+        resources[name].provider = provider
+      end
     end
   end
 
@@ -27,13 +38,6 @@ Puppet::Type.type(:pkg).provide(:yum) do
 
   def remove
     yum('remove', resource[:remove_options],  resource[:name])
-  end
-
-  def version
-    version = rpm('-q', resource[:name])
-    if version =~ /^#{Regexp.escape(resource[:name])}-(.*)/
-      $1
-    end
   end
 
   def version=(value)
